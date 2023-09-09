@@ -4,4 +4,4 @@ var arg2 = args[2];
 
 // TODO: implement calculator logic
 var result = arg1 + operation + arg2;
-Console.WriteLine(result);
+//Console.WriteLine(result);
