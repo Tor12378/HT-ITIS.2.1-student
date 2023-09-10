@@ -7,17 +7,12 @@ public static class Parser
         out CalculatorOperation operation,
         out double val2)
     {
-        if (IsArgLengthSupported(args))
-        {
-            val1 = ParseStringToDouble(args[0]);
-            operation = ParseOperation(args[1]);
-            val2 = ParseStringToDouble(args[2]);
-        }
-        else
-        {
+        if (!IsArgLengthSupported(args))
             throw new ArgumentException("Invalid number of arguments specified");
+        val1 = ParseStringToDouble(args[0]);
+        operation = ParseOperation(args[1]);
+        val2 = ParseStringToDouble(args[2]);
         }
-    }
 
     private static double ParseStringToDouble(string s)
     {
