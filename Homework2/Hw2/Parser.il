@@ -128,10 +128,6 @@
 
     SaveOperation:
     stloc.0
-    ldc.i4.1
-    brtrue.s LoadAndReturn
-
-    LoadAndReturn:
     ldloc.0
     stloc.1
     ldloc.1
