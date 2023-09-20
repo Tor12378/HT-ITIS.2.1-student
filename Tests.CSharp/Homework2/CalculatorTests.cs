@@ -23,27 +23,27 @@ public class CalculatorTests
     public void TestInvalidOperation()
     {
         //assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => Calculator.Calculate(3, CalculatorOperation.Undefined, 2));
+        Assert.Throws<InvalidOperationException>(() => Calculator.Calculate(3, CalculatorOperation.Undefined, 2));
     }
 
     [Homework(Homeworks.HomeWork2)]
     public void TestDividingNonZeroByZero()
     {
         //act
-        var actual = Calculator.Calculate(0, CalculatorOperation.Divide, 2);
+        var actual = Calculator.Calculate(10, CalculatorOperation.Divide, 0);
 
         //assert
-        Assert.Equal(0, actual);
+        Assert.Equal(double.PositiveInfinity, actual);
     }
 
     [Homework(Homeworks.HomeWork2)]
     public void TestDividingZeroByNonZero()
     {
         //act
-        var actual = Calculator.Calculate(2, CalculatorOperation.Divide, 0);
+        var actual = Calculator.Calculate(0, CalculatorOperation.Divide, 10);
 
         //assert
-        Assert.Equal(double.PositiveInfinity, actual);
+        Assert.Equal(0, actual);
     }
 
     [Homework(Homeworks.HomeWork2)]

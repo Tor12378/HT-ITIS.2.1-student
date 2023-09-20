@@ -51,7 +51,7 @@ public class ParserTests
     public void TestParserWrongLength()
     {
         // arrange
-        var args = new[] { "1", "=", "1", "15" };
+        var args = new[] { "1", "+", "1", "15" };
 
         //assert
         Assert.Throws<ArgumentException>(() => Parser.ParseCalcArguments(args, out _, out _, out _));
