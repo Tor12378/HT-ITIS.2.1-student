@@ -37,7 +37,7 @@
         stloc.0
         br.s Result
     
-        Other: newobj instance void [System.Runtime]System.ArgumentOutOfRangeException::.ctor()
+        Other: newobj instance void [System.Runtime]System.InvalidOperationException::.ctor()
         throw
     
         Result: ldloc.0
