@@ -21,26 +21,20 @@ public class SingleInitializationSingleton
     
     internal static void Reset()
     {
-        lock (_lock)
-        {
-            if (!_lazySingleton.IsValueCreated)
-            {
-                _lazySingleton =
-                    new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(DefaultDelay));
-                _isInitialized = false;
-            }
-        }
+        _lazySingleton = new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(DefaultDelay));
+        _isInitialized = false;
     }
 
     public static void Initialize(int delay)
     {
+        if (_isInitialized)
+            throw new InvalidOperationException("Cannot be initialized more than once!");
         lock (_lock)
         {
             if (_isInitialized)
-            {
                 throw new InvalidOperationException("Cannot be initialized more than once!");
-            }
-            _lazySingleton = new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(delay));
+            _lazySingleton =
+                new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(delay));
             _isInitialized = true;
         }
     }
