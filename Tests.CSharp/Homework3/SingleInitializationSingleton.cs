@@ -6,6 +6,7 @@ public class SingleInitializationSingleton
     private static Lazy<SingleInitializationSingleton> _lazySingleton =
         new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(DefaultDelay));
     private static bool _isInitialized = false;
+    private static readonly object _lock = new object();
 
     private SingleInitializationSingleton(int delay = DefaultDelay)
     {
@@ -20,17 +21,27 @@ public class SingleInitializationSingleton
     
     internal static void Reset()
     {
-        _lazySingleton = new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(DefaultDelay));
-        _isInitialized = false;
+        lock (_lock)
+        {
+            if (!_lazySingleton.IsValueCreated)
+            {
+                _lazySingleton =
+                    new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(DefaultDelay));
+                _isInitialized = false;
+            }
+        }
     }
 
     public static void Initialize(int delay)
     {
-        if (_isInitialized)
+        lock (_lock)
         {
-            throw new InvalidOperationException("Cannot be initialized more than once!");
+            if (_isInitialized)
+            {
+                throw new InvalidOperationException("Cannot be initialized more than once!");
+            }
+            _lazySingleton = new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(delay));
+            _isInitialized = true;
         }
-        _lazySingleton = new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(delay));
-        _isInitialized = true;
-    } 
+    }
 }
