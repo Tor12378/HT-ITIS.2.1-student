@@ -3,28 +3,39 @@ namespace Tests.CSharp.Homework3;
 public class SingleInitializationSingleton
 {
     public const int DefaultDelay = 3_000;
-    private static readonly object Locker = new();
-
-    private static volatile bool _isInitialized = false;
+    private static Lazy<SingleInitializationSingleton> _lazySingleton =
+        new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(DefaultDelay));
+    private static bool _isInitialized = false;
+    private static readonly object _lock = new object();
 
     private SingleInitializationSingleton(int delay = DefaultDelay)
     {
         Delay = delay;
-        // imitation of complex initialization logic
+        // имитация сложной инициализационной логики
         Thread.Sleep(delay);
     }
 
     public int Delay { get; }
 
-    public static SingleInitializationSingleton Instance => throw new NotImplementedException();
-
+    public static SingleInitializationSingleton Instance => _lazySingleton.Value;
+    
     internal static void Reset()
     {
-        throw new NotImplementedException();
+        _lazySingleton = new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(DefaultDelay));
+        _isInitialized = false;
     }
 
     public static void Initialize(int delay)
     {
-        throw new NotImplementedException();
+        if (_isInitialized)
+            throw new InvalidOperationException("Cannot be initialized more than once!");
+        lock (_lock)
+        {
+            if (_isInitialized)
+                throw new InvalidOperationException("Cannot be initialized more than once!");
+            _lazySingleton =
+                new Lazy<SingleInitializationSingleton>(() => new SingleInitializationSingleton(delay));
+            _isInitialized = true;
+        }
     }
 }
