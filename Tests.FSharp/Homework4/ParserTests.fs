@@ -35,7 +35,7 @@ let ``Incorrect values throw ArgumentException`` (val1, operation, val2) =
     Assert.Throws<ArgumentException>(fun () -> parseCalcArguments args |> ignore)
 
 [<Homework(Homeworks.HomeWork4)>]
-let ``Incorrect operations throw ArgumentException``() =
+let ``Incorrect operations throw InvalidOperationException``() =
     // arrange
     let args = [|"3";".";"4"|]
     
