@@ -10,9 +10,7 @@ public class Calculator : ICalculator
 
     public double Divide(double firstValue, double secondValue)
     {
-        if (secondValue == 0)
-            throw new InvalidOperationException(Messages.DivisionByZeroMessage);
-        return (firstValue / secondValue);
+        return secondValue == 0 ? throw new InvalidOperationException(Messages.DivisionByZeroMessage) : (firstValue / secondValue);
     }
     
     public double Calculate(Operation operation, double val1, double val2)

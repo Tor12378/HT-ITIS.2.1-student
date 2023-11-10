@@ -21,11 +21,11 @@ public class CalculatorController : Controller
         try
         {
             var args = Parser.ParseArguments(val1, operation, val2);
-            return _calculator.Calculate(args.Item2, args.Item1, args.Item3);
+            return Ok(_calculator.Calculate(args.Item2, args.Item1, args.Item3));
         }
         catch (Exception ex)
         {
-            return StatusCode(400, ex.Message);
+            return BadRequest(ex.Message);
         }
     }
     
