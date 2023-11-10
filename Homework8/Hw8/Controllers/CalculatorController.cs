@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using Hw8.Calculator;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,12 +6,27 @@ namespace Hw8.Controllers;
 
 public class CalculatorController : Controller
 {
-    public ActionResult<double> Calculate([FromServices] ICalculator calculator,
+    private readonly ICalculator _calculator;
+
+    public CalculatorController(ICalculator calculator)
+    {
+        _calculator = calculator;
+    }
+
+    public ActionResult<double> Calculate(
         string val1,
         string operation,
         string val2)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var args = Parser.ParseArguments(val1, operation, val2);
+            return Ok(_calculator.Calculate(args.Item2, args.Item1, args.Item3));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
     
     [ExcludeFromCodeCoverage]
