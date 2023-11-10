@@ -6,30 +6,34 @@ namespace Hw8.Controllers;
 
 public class CalculatorController : Controller
 {
-    public ActionResult<double> Calculate([FromServices] ICalculator calculator,
+    private readonly ICalculator _calculator;
+
+    public CalculatorController(ICalculator calculator)
+    {
+        _calculator = calculator;
+    }
+
+    public ActionResult<double> Calculate(
         string val1,
         string operation,
         string val2)
     {
         try
         {
-            return Parser.ParseArguments(val1, operation, val2) switch
-            {
-                (var value1, Operation.Plus, var value2) => calculator.Plus(value1, value2),
-                (var value1, Operation.Minus, var value2) => calculator.Minus(value1, value2),
-                (var value1, Operation.Multiply, var value2) => calculator.Multiply(value1, value2),
-                (var value1, Operation.Divide, 0) => Content(Messages.DivisionByZeroMessage),
-                (var value1, Operation.Divide, var value2) => calculator.Divide(value1, value2)
-                
-            };
+            var args = Parser.ParseArguments(val1, operation, val2);
+            return _calculator.Calculate(args.Item2, args.Item1, args.Item3);
         }
-        catch (ArgumentException)
+        catch (DivideByZeroException)
         {
-            return this.Content(Messages.InvalidNumberMessage);
+            return StatusCode(400, Messages.DivisionByZeroMessage);
+        }
+        catch (InvalidOperationException)
+        {
+            return StatusCode(400, Messages.InvalidOperationMessage);
         }
         catch
         {
-            return this.Content(Messages.InvalidOperationMessage);
+            return StatusCode(400, Messages.InvalidNumberMessage);
         }
     }
     

@@ -7,11 +7,11 @@ public class Parser
     {
         if (!(Double.TryParse(val1, NumberStyles.Any, CultureInfo.InvariantCulture, out var value1) &&
               Double.TryParse(val2, NumberStyles.Any, CultureInfo.InvariantCulture, out var value2)))
-            throw new ArgumentException();
+            throw new ArgumentException("Incorrect arguments for calculation");
         
         var operation = ParseOperation(op);
         if (operation == Operation.Invalid)
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("Incorrect operation");
         
         return (value1, operation, value2);
     }
