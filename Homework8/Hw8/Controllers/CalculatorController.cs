@@ -23,17 +23,9 @@ public class CalculatorController : Controller
             var args = Parser.ParseArguments(val1, operation, val2);
             return _calculator.Calculate(args.Item2, args.Item1, args.Item3);
         }
-        catch (DivideByZeroException)
+        catch (Exception ex)
         {
-            return StatusCode(400, Messages.DivisionByZeroMessage);
-        }
-        catch (InvalidOperationException)
-        {
-            return StatusCode(400, Messages.InvalidOperationMessage);
-        }
-        catch
-        {
-            return StatusCode(400, Messages.InvalidNumberMessage);
+            return StatusCode(400, ex.Message);
         }
     }
     

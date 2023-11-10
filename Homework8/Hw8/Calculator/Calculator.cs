@@ -11,26 +11,19 @@ public class Calculator : ICalculator
     public double Divide(double firstValue, double secondValue)
     {
         if (secondValue == 0)
-            throw new InvalidOperationException("Division by zero");
+            throw new InvalidOperationException(Messages.DivisionByZeroMessage);
         return (firstValue / secondValue);
     }
     
     public double Calculate(Operation operation, double val1, double val2)
     {
-        switch (operation)
+        return operation switch
         {
-            case Operation.Plus:
-                return Plus(val1, val2);
-            case Operation.Minus:
-                return Minus(val1, val2);
-            case Operation.Multiply:
-                return Multiply(val1, val2);
-            case Operation.Divide:
-                if (val2 == 0)
-                    throw new DivideByZeroException("Division by zero");
-                return Divide(val1, val2);
-            default:
-                throw new InvalidOperationException("Invalid operation");
-        }
+            Operation.Plus => Plus(val1, val2),
+            Operation.Minus => Minus(val1, val2),
+            Operation.Multiply => Multiply(val1, val2),
+            Operation.Divide => Divide(val1, val2),
+            _ => throw new InvalidOperationException(Messages.InvalidOperationMessage)
+        };
     }
 }
