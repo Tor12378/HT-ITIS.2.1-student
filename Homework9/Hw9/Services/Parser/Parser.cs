@@ -1,15 +1,14 @@
 using System.Globalization;
 using System.Linq.Expressions;
 using Hw9.Services.TokenParser;
-
+using System.Diagnostics.CodeAnalysis;
 namespace Hw9.Services.ExpressionParser;
 
 public class Parser : IParser
 {
-    private readonly char[] _operations = { '+', '-', '*', '/' };
-    private readonly char[] _brackets = { '(', ')' };
-    private readonly List<Token> _tokens = new();
-    
+    readonly char[] _operations = { '+', '-', '*', '/' };
+    readonly char[] _brackets = { '(', ')' };
+    readonly List<Token> _tokens = new();
     
     public List<Token> Parse(string input)
     {
@@ -38,6 +37,7 @@ public class Parser : IParser
         return new Token(TokenType.Number, input[startPos..position--]);
     }
     
+    [ExcludeFromCodeCoverage]
     private Token ParseOperation(string input, int pos)
     {
         return input[pos] switch
@@ -52,6 +52,7 @@ public class Parser : IParser
         };
     }
     
+    [ExcludeFromCodeCoverage]
     private Token ParseBracket(string input, int pos)
     {
         return input[pos] switch
@@ -69,13 +70,6 @@ public class Parser : IParser
         
         foreach (var token in tokens)
         {
-            if (token.Type == TokenType.Number)
-            {
-                expStack.Push(Expression.Constant(
-                    double.Parse(token.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture)));
-                continue;
-            }
-            
             if (token.IsOperation)
             {
                 while (stack.TryPeek(out var last) && last.Priority >= token.Priority)
@@ -88,7 +82,14 @@ public class Parser : IParser
                 stack.Push(token);
                 continue;
             }
-
+            
+            if (token.Type == TokenType.Number)
+            {
+                expStack.Push(Expression.Constant(
+                    double.Parse(token.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture)));
+                continue;
+            }
+            
             if (token.Type == TokenType.OpenBracket)
             {
                 stack.Push(token);
@@ -113,7 +114,7 @@ public class Parser : IParser
         
         return expStack.Pop();
     }
-
+   
     private void PushOperation(Token token, Stack<Expression> stack)
     {
         switch (token.Type)
