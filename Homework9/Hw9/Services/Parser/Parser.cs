@@ -74,9 +74,7 @@ public class Parser : IParser
             {
                 while (stack.TryPeek(out var last) && last.Priority >= token.Priority)
                 {
-                    if (last.Type == TokenType.Negate)
-                        PushOperation(stack.Pop(), expStack);
-                    else if (expStack.Count > 1)
+                    if (expStack.Count > 1)
                         PushOperation(stack.Pop(), expStack);
                 }
                 stack.Push(token);
