@@ -5,7 +5,6 @@
         <AssemblyName>Hw6.App</AssemblyName>
         <EnableDefaultContentItems>false</EnableDefaultContentItems>
         <RootNamespace>Hw6</RootNamespace>
-        <LangVersion>7.0</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
