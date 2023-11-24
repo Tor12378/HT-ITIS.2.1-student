@@ -19,12 +19,11 @@ namespace Homework10.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Homework10.DbModels.SolvingExpression", b =>
+            modelBuilder.Entity("hw10.DbModels.SolvingExpression", b =>
                 {
                     b.Property<int>("SolvingExpressionId")
                         .ValueGeneratedOnAdd()
