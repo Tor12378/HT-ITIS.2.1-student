@@ -19,7 +19,7 @@ let sendRequestAsync(client : HttpClient) (url : string) =
     
     
 [<EntryPoint>]
-let main args =
+let main _ =
     let input = Console.ReadLine()
     use handler = new HttpClientHandler()
     use client = new HttpClient(handler)

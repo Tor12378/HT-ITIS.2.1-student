@@ -12,7 +12,7 @@ public class Program
         
         builder.Services.AddScoped<ICalculator, Calculator.Calculator>();
         builder.Services.AddControllersWithViews();
-
+        builder.Services.AddMiniProfiler(options => options.RouteBasePath = "/profiler");
         var app = builder.Build();
 
         if (!app.Environment.IsDevelopment())
@@ -20,7 +20,7 @@ public class Program
             app.UseExceptionHandler("/Home/Error");
             app.UseHsts();
         }
-
+        app.UseMiniProfiler();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
