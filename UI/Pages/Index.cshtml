@@ -1,0 +1,155 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h5 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .buttonForStart {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #log {
+            margin-top: 30px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container text-center">
+        <h5>Бой DnD</h5>
+
+        <form class="form-vertical" method="post">
+            <div class="form-group">
+                <label for="Name">Name</label>
+                <input required type="text" class="form-control" name="Name" value="@Model.Player!.Name">
+
+                <label for="HitPoints">HitPoints</label>
+                            <input type="number" class="form-control" name="HitPoints" value="@Model.Player.HitPoints">
+                
+                            <label for="AttackModifier">AttackModifier</label>
+                            <input type="number" class="form-control" name="AttackModifier" value="@Model.Player.AttackModifier">
+                
+                            <label for="AttackPerRound">AttackPerRound</label>
+                            <input type="number" class="form-control" name="AttackPerRound" value="@Model.Player.AttackPerRound">
+                
+                            <label for="Damage">Damage</label>
+                            <input required type="text" placeholder="Например 1d6" class="form-control" name="Damage" value="@Model.Player.Damage">
+                
+                            <label for="DamageModifier">DamageModifier</label>
+                            <input type="number" class="form-control" name="DamageModifier" value="@Model.Player.DamageModifier">>
+
+                <label for="Ac">Ac</label>
+                <input type="number" class="form-control" name="Ac" value="@Model.Player.Ac">
+            </div>
+
+            <div class="form-group">
+                @if (Model.FightLog is null)
+                {
+                    <button class="buttonForStart" type="submit">Бой</button>
+                }
+            </div>
+        </form>
+
+        <div id="log">
+            @if (Model.Monster is not null)
+            {
+                <h2>Ваш противник:</h2>
+                <ul>
+                    <li><strong>Id:</strong> @Model.Monster.Id</li>
+                    <li><strong>Name:</strong> @Model.Monster.Name</li>
+                                <li><strong>HitPoints:</strong> @Model.Monster.HitPoints</li>
+                                <li><strong>AttackModifier:</strong> @Model.Monster.AttackModifier</li>
+                                <li><strong>AttackPerRound:</strong> @Model.Monster.AttackPerRound</li>
+                                <li><strong>Damage:</strong> @Model.Monster.Damage</li>
+                                <li><strong>DamageModifier:</strong> @Model.Monster.DamageModifier</li>
+                                <li><strong>Ac:</strong> @Model.Monster.Ac</li>
+                </ul>
+            }
+
+            @if (Model.FightLog is not null)
+            {
+                <h2>Лог Боя</h2>
+                @foreach (var item in Model.FightLog)
+                {
+                    foreach (var itemRound in item.Rounds!)
+                    {
+                        <p>@itemRound.Message</p>
+                        @if (itemRound.Message!.Contains("Вы победили!"))
+                        {
+                            <button type="button" class="buttonForStart"
+                                onclick="location.href='@Url.Page("http://localhost:5149/")'">Новый бой</button>
+                        }
+                    }
+                }
+            }
+        </div>
+    </div>
+
+</body>
+
+</html>
